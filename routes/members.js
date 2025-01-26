@@ -97,18 +97,22 @@ router.get("/related/:id", async (req, res) => {
 
 router.get("/:email", async (req, res) => {
   try {
-    const { email } = req.params; // Extract email from the route parameter
-    const member = await Member.findOne({ email }); // Search for the member by email
+    const { email } = req.params;
+    console.log("Fetching member with email:", email);
+
+    // Search for the member by email
+    const member = await Member.findOne({ email });
     if (!member) {
       return res.status(404).json({ exists: false });
     }
-    console.log("The member found by email:", member);
+
     res.status(200).json({ exists: true, member });
   } catch (err) {
     console.error("Error fetching member by email:", err);
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
 
 
 module.exports = router;
