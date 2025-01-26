@@ -102,6 +102,7 @@ router.get("/:email", async (req, res) => {
     if (!member) {
       return res.status(404).json({ exists: false });
     }
+    console.log("The member found by email:", member);
     res.status(200).json({ exists: true, member });
   } catch (err) {
     console.error("Error fetching member by email:", err);
