@@ -132,6 +132,25 @@ router.get("/aggregate/role", async (req, res) => {
   }
 });
 
+router.get("/aggregate/traditions", async (req, res) => {
+  try {
+    const traditions = await Member.aggregate([
+      { $match: { dartmouthTradition: { $exists: true, $ne: "" } } },
+      {
+        $group: {
+          _id: "$dartmouthTradition",
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { count: -1 } },
+    ]);
+
+    res.status(200).json(traditions);
+  } catch (err) {
+    console.error("Error aggregating traditions:", err.message);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 
 
 // Find related members by role or major
