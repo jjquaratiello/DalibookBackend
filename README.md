@@ -12,6 +12,5 @@ cd DaliBookBackend
 npm install
 node app.js
 ```
-
-Will be running on PORT 5000
+Also you will need to change the VITE_API_BASE_URL var in .env. I commented it their, but base behavior it to heroku hosted API. Will be running on PORT 5000 locally
 
