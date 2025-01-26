@@ -60,7 +60,7 @@ router.get('/videos/:query', async (req, res) => {
       return res.status(404).json({ message: `No videos found for query "${query}".` });
     }
 
-    console.log("Videos sent to frontend:", videos);
+    //console.log("Videos sent to frontend:", videos);
     res.status(200).json(videos);
   } catch (error) {
     console.error('Error retrieving videos:', error);
