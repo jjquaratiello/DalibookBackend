@@ -29,6 +29,30 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.get("/:email", async (req, res) => {
+  try {
+    const { email } = req.params;
+
+    if (!email) {
+      return res.status(400).json({ error: "Email parameter is required." });
+    }
+
+    console.log("Fetching member with email:", email);
+
+
+    const member = await Member.findOne({ email: email.trim() });
+
+    if (!member) {
+      return res.status(404).json({ exists: false });
+    }
+
+    res.status(200).json({ exists: true, member });
+  } catch (err) {
+    console.error("Error fetching member by email:", err.message);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 // Get a single member by ID
 router.get("/:id", async (req, res) => {
   try {
@@ -94,31 +118,6 @@ router.get("/related/:id", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
-router.get("/:email", async (req, res) => {
-  try {
-    const { email } = req.params;
-
-    if (!email) {
-      return res.status(400).json({ error: "Email parameter is required." });
-    }
-
-    console.log("Fetching member with email:", email);
-
-
-    const member = await Member.findOne({ email: email.trim() });
-
-    if (!member) {
-      return res.status(404).json({ exists: false });
-    }
-
-    res.status(200).json({ exists: true, member });
-  } catch (err) {
-    console.error("Error fetching member by email:", err.message);
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
-
 
 
 
