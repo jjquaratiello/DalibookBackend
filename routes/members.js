@@ -18,6 +18,17 @@ router.get("/", async (req, res) => {
   }
 });
 
+// Add a new member
+router.post("/", async (req, res) => {
+  try {
+    const newMember = new Member(req.body);
+    await newMember.save();
+    res.status(201).json(newMember);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
 // Get a single member by ID
 router.get("/:id", async (req, res) => {
   try {
@@ -29,16 +40,6 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// Add a new member
-router.post("/", async (req, res) => {
-  try {
-    const newMember = new Member(req.body);
-    await newMember.save();
-    res.status(201).json(newMember);
-  } catch (err) {
-    res.status(400).json({ error: err.message });
-  }
-});
 
 // Update a member by ID
 router.put("/:id", async (req, res) => {
@@ -89,6 +90,18 @@ router.get("/related/:id", async (req, res) => {
     });
 
     res.status(200).json({ member, relatedMembers });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.get("/:email", async (req, res) => {
+  try {
+    const member = await Member.findOne({ email: req.params.email });
+    if (!member) {
+      return res.status(200).json({ exists: false });
+    }
+    res.status(200).json({ exists: true, member });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
