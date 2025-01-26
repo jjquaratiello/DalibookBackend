@@ -39,19 +39,18 @@ router.get("/:email", async (req, res) => {
 
     console.log("Fetching member with email:", email);
 
-
     const member = await Member.findOne({ email: email.trim() });
 
-    if (!member) {
-      return res.status(404).json({ exists: false });
-    }
-
-    res.status(200).json({ exists: true, member });
+    res.status(200).json({
+      exists: !!member,
+      member: member || null,
+    });
   } catch (err) {
     console.error("Error fetching member by email:", err.message);
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
 
 // Get a single member by ID
 router.get("/:id", async (req, res) => {
