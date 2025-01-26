@@ -101,6 +101,18 @@ router.get("/aggregate/major", async (req, res) => {
   }
 });
 
+router.get("/aggregate/role", async (req, res) => {
+  try {
+    const result = await Member.aggregate([
+      { $group: { _id: { dev: "$dev", des: "$des", pm: "$pm" }, count: { $sum: 1 } } },
+    ]);
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
 // Find related members by role or major
 router.get("/related/:id", async (req, res) => {
   try {
